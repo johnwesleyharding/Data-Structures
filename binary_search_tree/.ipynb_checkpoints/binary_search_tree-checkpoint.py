@@ -34,8 +34,6 @@ class BinarySearchTree:
                 
                 self.right = BinarySearchTree(value)
             
-    # Return True if the tree contains the value
-    # False if it does not
     def contains(self, target):
         
         if self.value < target and self.right:
@@ -52,17 +50,14 @@ class BinarySearchTree:
         
         return False
 
-    # Return the maximum value found in the tree
     def get_max(self):
         
         if self.right:
             
-            return self.get_max()
+            return self.right.get_max()
             
         return self.value
 
-    # Call the function `cb` on the value of each node
-    # You may use a recursive or iterative approach
     def for_each(self, cb):
         
         if self.left:
@@ -73,47 +68,99 @@ class BinarySearchTree:
             
             self.right.for_each(cb)
             
-        cb(self)
+        cb(self.value)
 
-    # DAY 2 Project -----------------------
-
-    # Print all the values in order from low to high
-    # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
         
         if self.left:
             
-            self.in_order_print(self.left)
+            self.left.in_order_print(self.left)
         
         print(self.value)
         
         if self.right:
             
-            self.in_order_print(self.right)
+            self.right.in_order_print(self.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
         
-        print(self.value)
+        nodes = [[node, 0]]
+        depth = 0
+        prints = []
         
-        depth = self.left or self.right
-        opts = ['left', 'right']
-        
-        while depth > 0:
+        while len(nodes) > 0:
             
-            print(getattr('self' + '.left' * depth + '.value'))
+            if nodes[depth][1] == 0:
                 
+                if len(prints) < depth + 1:
+                    
+                    prints.append([nodes[depth][0].value])
+                    
+                else:
+                    
+                    prints[depth].append(nodes[depth][0].value)
                 
+                nodes[depth][1] += 1
+                
+                if nodes[depth][0].left:
+                    
+                    nodes.append([nodes[depth][0].left, 0])
+                    depth += 1
+                
+            elif nodes[depth][1] == 1:
+                
+                nodes[depth][1] += 1
+                
+                if nodes[depth][0].right:
+                    
+                    nodes.append([nodes[depth][0].right, 0])
+                    depth += 1
             
-            
-            
-            
+            else:
+                
+                nodes.pop(-1)
+                depth -= 1
+                
+        for depth in prints:
+                
+            for value in depth:
+                    
+                print(value)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        
+        nodes = [[node, 0]]
+        depth = 0
+        
+        while len(nodes) > 0:
+            
+            if nodes[depth][1] == 0:
+                
+                print(nodes[depth][0].value)
+                nodes[depth][1] += 1
+                
+                if nodes[depth][0].left:
+                    
+                    nodes.append([nodes[depth][0].left, 0])
+                    depth += 1
+                
+            elif nodes[depth][1] == 1:
+                
+                nodes[depth][1] += 1
+                
+                if nodes[depth][0].right:
+                    
+                    nodes.append([nodes[depth][0].right, 0])
+                    depth += 1
+            
+            else:
+                
+                nodes.pop(-1)
+                depth -= 1
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
