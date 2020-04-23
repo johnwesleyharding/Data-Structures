@@ -81,62 +81,52 @@ class BinarySearchTree:
         if self.right:
             
             self.right.in_order_print(self.right)
-
-    # Print the value of every node, starting with the given node,
-    # in an iterative breadth first traversal
+    
     def bft_print(self, node):
         
-        nodes = [[node, 0]]
+        nodes = [[node]]
         depth = 0
-        prints = []
         
-        while len(nodes) > 0:
+        while depth >= 0:
             
-            if nodes[depth][1] == 0:
+            flag = False
+            
+            for node in nodes[depth]:
                 
-                if len(prints) < depth + 1:
+                print(node.value)
+                
+                if node.left:
                     
-                    prints.append([nodes[depth][0].value])
+                    if flag == False:
+                        
+                        flag = True
+                        nodes.append([])
                     
-                else:
+                    nodes[depth + 1].append(node.left)
+                
+                if node.right:
                     
-                    prints[depth].append(nodes[depth][0].value)
-                
-                nodes[depth][1] += 1
-                
-                if nodes[depth][0].left:
+                    if flag == False:
+                        
+                        flag = True
+                        nodes.append([])
                     
-                    nodes.append([nodes[depth][0].left, 0])
-                    depth += 1
+                    nodes[depth + 1].append(node.right)
                 
-            elif nodes[depth][1] == 1:
-                
-                nodes[depth][1] += 1
-                
-                if nodes[depth][0].right:
+            if flag == True:
                     
-                    nodes.append([nodes[depth][0].right, 0])
-                    depth += 1
+                depth += 1
             
             else:
                 
-                nodes.pop(-1)
-                depth -= 1
-                
-        for depth in prints:
-                
-            for value in depth:
-                    
-                print(value)
-
-    # Print the value of every node, starting with the given node,
-    # in an iterative depth first traversal
+                depth = -1
+    
     def dft_print(self, node):
         
         nodes = [[node, 0]]
         depth = 0
         
-        while len(nodes) > 0:
+        while depth >= 0:
             
             if nodes[depth][1] == 0:
                 
@@ -162,9 +152,6 @@ class BinarySearchTree:
                 nodes.pop(-1)
                 depth -= 1
 
-    # STRETCH Goals -------------------------
-    # Note: Research may be required
-
     # Print Pre-order recursive DFT
     def pre_order_dft(self, node):
         pass
@@ -172,3 +159,4 @@ class BinarySearchTree:
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
         pass
+    
